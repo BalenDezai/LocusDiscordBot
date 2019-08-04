@@ -1,5 +1,5 @@
-import * as Discord from 'discord.js';
-import { token } from './config.json';
+const Discord = require('discord.js');
+const Config = require('./config.json');
 
 require('dotenv').config();
 
@@ -9,4 +9,4 @@ client.once('ready', () => {
   console.log('Ready');
 });
 
-client.login(token);
+client.login(Config.token);

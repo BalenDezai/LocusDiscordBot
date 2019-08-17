@@ -7,7 +7,7 @@ class LocusBot extends Client {
   constructor(options) {
     super(options);
 
-    this.Config = require('./config.js/index.js');
+    this.Config = require('../config');
 
     /* Create collections for commands and aliases for each command */
     this.commands = new Collection();
@@ -22,7 +22,7 @@ class LocusBot extends Client {
     });
 
     /* Easier console logging */
-    this.logger = require('./modules/Logger');
+    this.logger = require('./Logger');
 
     /* We don't use no setTimeout here >:) */
     this.wait = promisify(setTimeout);

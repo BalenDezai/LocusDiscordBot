@@ -6,15 +6,17 @@ class Logger {
 
     switch (type) {
       case 'log':
-        return console.log(`${currentTimestamp} ${chalk.bgBlue(type.toUpperCase())}\n${content}`);
+        return console.log(`${currentTimestamp} ${chalk.bgBlue(type.toUpperCase())} -> ${content}`);
       case 'debug':
-        return console.log(`${currentTimestamp} ${chalk.bgWhite(type.toUpperCase())}\n${content}`);
+        return console.log(`${currentTimestamp} ${chalk.bgWhite(type.toUpperCase())} -> ${content}`);
       case 'error':
-        return console.log(`${currentTimestamp} ${chalk.bgRed(type.toUpperCase())}\n${content}`);
+        return console.log(`${currentTimestamp} ${chalk.bgRed(type.toUpperCase())} -> ${content}`);
       case 'warning':
-        return console.log(`${currentTimestamp} ${chalk.bgYellow(type.toUpperCase())}\n${content}`);
+        return console.log(`${currentTimestamp} ${chalk.bgYellow(type.toUpperCase())} -> ${content}`);
       case 'success':
-        return console.log(`${currentTimestamp} ${chalk.bgGreen(type.toUpperCase())}\n${content}`);
+        return console.log(`${currentTimestamp} ${chalk.bgGreen(type.toUpperCase())} -> ${content}`);
+      case 'command':
+        return console.log(`${currentTimestamp} ${chalk.bgMagenta(type.toUpperCase())} -> ${content}`);
       default:
         throw new Error('Incorrect/unsupported logging type');
     }
@@ -30,6 +32,10 @@ class Logger {
 
   static debug(content) {
     return this.log(content, 'debug');
+  }
+
+  static command(content) {
+    return this.log(content, 'command');
   }
 }
 

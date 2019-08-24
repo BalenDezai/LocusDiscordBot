@@ -26,7 +26,8 @@ class message {
     if (message.content.indexOf(guildSettings.prefix) !== 0) return;
 
     // Begin command processing
-    const messageArgs = message.content.slice(guildSettings.prefix.length).trim().split(/ +/g);
+    //const messageArgs = message.content.slice(guildSettings.prefix.length).trim().split(/ +/g);
+    const messageArgs = message.content.substring(guildSettings.prefix.length).trim().split(' ');
     const commandText = messageArgs.shift().toLowerCase();
 
     // Prevent caching errors by fetching the member if for any reason they should be invisible or not cached
@@ -52,11 +53,11 @@ class message {
     }
 
     message.author.permLevel = lvl;
-    message.flags = [];
+    // message.flags = [];
     
-    while(messageArgs[0] && messageArgs[0][0]) {
-      message.flags.push(messageArgs.shift().slice(1));
-    }
+    // while(messageArgs[0] && messageArgs[0][0]) {
+    //   message.flags.push(messageArgs.shift().slice(1));
+    // }
 
     // Finally we run the command
     this.client.logger.command(`${message.author.tag} (ID:${message.author.id}) is trying to run command ${command.help.name}`);

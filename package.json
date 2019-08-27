@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "lint": "./node_modules/.bin/eslint index.js",
+    "lint": "./node_modules/.bin/eslint ./ --ext .js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "https://github.com/BalenD/LocusDiscordBot",
@@ -22,7 +22,6 @@
     "better-sqlite3": "^5.4.2",
     "chalk": "^2.4.2",
     "discord.js": "^11.4.2",
-    "dotenv": "^6.2.0",
     "enmap": "^5.1.2",
     "klaw": "^3.0.0"
   }

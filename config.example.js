@@ -1,23 +1,23 @@
 const config = {
-  "botAdmins": [''],
-  "token": '',
+  botAdmins: [''],
+  token: '',
 
-  "defaultSettings": {
-    "prefix": 'locus ',
-    "modLogChannel": 'mod-log',
-    "modRoleName": 'Moderator',
-    "adminRoleName": 'Administrator',
-    "systemNotice": true,
-    "welcomeEnabled": false,
-    "welcomeChannel": 'general',
-    "welcomeMessage": 'Welcome {{user}}!'
+  defaultSettings: {
+    prefix: 'locus ',
+    modLogChannel: 'mod-log',
+    modRoleName: 'Moderator',
+    adminRoleName: 'Administrator',
+    systemNotice: true,
+    welcomeEnabled: false,
+    welcomeChannel: 'general',
+    welcomeMessage: 'Welcome {{user}}!',
   },
 
-  "permLevels": [
+  permLevels: [
     {
       lvl: 0,
       name: 'Member',
-      check: () => true
+      check: () => true,
     },
     {
       lvl: 1,
@@ -29,7 +29,8 @@ const config = {
         } catch (e) {
           return false;
         }
-      }
+        return false;
+      },
     },
     {
       lvl: 2,
@@ -41,26 +42,25 @@ const config = {
         } catch (e) {
           return false;
         }
-      }
+      },
     },
     {
       lvl: 3,
       name: 'Server Owner',
-      check: (message) => {
-        message.channel.type === 'text' ? (message.guild.owner.user.id === message.author.id ? true : false) : false;
-      }
+      check: message => (message.channel.type === 'text' ? (message.guild.owner.user.id === message.author.id) : false),
+
     },
     {
       lvl: 9,
       name: 'Bot Administrator',
-      check: (message) => config.botAdmins.includes(message.author.id)
+      check: message => config.botAdmins.includes(message.author.id),
     },
     {
       lvl: 10,
       name: 'Bot Owner',
-      check: (message) => (message.client.appInfo.owner.id === message.author.id)
-    }
-  ]
+      check: message => (message.client.appInfo.owner.id === message.author.id),
+    },
+  ],
 };
 
 module.exports = config;

@@ -1,14 +1,13 @@
 /* Check node version, to prevent the bot from running in older/deprecated versions of Node.js */
-if (Number(process.version.slice(1).split('.')[0]) < 10)
-  throw new Error('Node 10 or higher is required to run this instance of the bot. Please check your Node version and update accordingly.')
+if (Number(process.version.slice(1).split('.')[0]) < 10) {
+  throw new Error('Node 10 or higher is required to run this instance of the bot. Please check your Node version and update accordingly.');
+}
 
-require('dotenv').config();
-const LocusBot = require('./modules/LocusBot');
 const { promisify } = require('util');
-const readdir = promisify(require("fs").readdir);
+const readdir = promisify(require('fs').readdir);
 const klaw = require('klaw');
 const path = require('path');
-
+const LocusBot = require('./modules/LocusBot');
 
 /* Initialize new client class */
 const client = new LocusBot();
@@ -38,18 +37,18 @@ const init = async () => {
     client.on(eventName, (...args) => event.run(...args));
 
     // Clean the cache of the event once we're done
-    delete require.cache[require.resolve(`./events/${file}`)]
+    delete require.cache[require.resolve(`./events/${file}`)];
   });
 
   /** Set the client's permission level cache */
-  for (let i = 0; i < client.Config.permLevels.length; i++) {
+  for (let i = 0; i < client.Config.permLevels.length; i += 1) {
     const currentLvl = client.Config.permLevels[i];
     client.levelCache[currentLvl.name] = currentLvl.lvl;
   }
 
   /** Login the client using the specified token */
   client.login(client.Config.token);
-}
+};
 
 // Run the asynchronous init function
 init();

@@ -9,6 +9,11 @@ module.exports = {
     },
     "rules": {
         "no-console": "off",
-        "linebreak-style": 0
+        "linebreak-style": 0,
+        "import/no-dynamic-require": "off",
+        "global-require": "off",
+        "max-len": "off",
+        "no-param-reassign": "off",
+        "consistent-return" : "off"
     }
 };

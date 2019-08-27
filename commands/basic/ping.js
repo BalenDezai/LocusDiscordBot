@@ -7,11 +7,11 @@ class Ping extends Command {
       description: 'Check the current API response time and latency',
       category: 'Basic',
       usage: 'ping',
-      aliases: ['latency', 'ms']
+      aliases: ['latency', 'ms'],
     });
   }
 
-  async run(message, args, lvl) {
+  async run(message) {
     try {
       const pongMessage = await message.channel.send(':ping_pong: | Ping!');
       pongMessage.edit(`:ping_pong: | Pong! (Latency: ${pongMessage.createdTimestamp - message.createdTimestamp}ms) (Ping: ${Math.round(this.client.ping)}ms)`);

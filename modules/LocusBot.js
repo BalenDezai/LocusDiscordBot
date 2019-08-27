@@ -1,7 +1,7 @@
 const { Client, Collection } = require('discord.js');
 const { promisify } = require('util');
 const path = require('path');
-const enmap = require('enmap');
+const Enmap = require('enmap');
 
 class LocusBot extends Client {
   constructor(options) {
@@ -14,11 +14,11 @@ class LocusBot extends Client {
     this.aliases = new Collection();
 
     /* Create individual settings for each server using Enmap */
-    this.settings = new enmap({
+    this.settings = new Enmap({
       name: 'serverSettings',
       cloneLevel: 'deep',
       fetchAll: false,
-      autoFetch: true
+      autoFetch: true,
     });
 
     /* Easier console logging */
@@ -31,10 +31,10 @@ class LocusBot extends Client {
     this.levelCache = {};
   }
 
-  permLevel (message) {
+  permLevel(message) {
     let permLvl = 0;
 
-    const permOrder = this.Config.permLevels.slice(0).sort((a, b) => {a.lvl < b.lvl ? 1 : -1});
+    const permOrder = this.Config.permLevels.slice(0).sort((a, b) => (a.lvl < b.lvl ? 1 : -1));
 
     while (permOrder.length) {
       const currentLvl = permOrder.shift();
@@ -78,8 +78,9 @@ class LocusBot extends Client {
       command = this.commands.get(this.aliases.get(commandName));
     }
 
-    if (!command)
+    if (!command) {
       return `The command or alias '${commandName}' does not exist.`;
+    }
 
     if (command.shutdown) {
       await command.shutdown(this);
@@ -93,7 +94,7 @@ class LocusBot extends Client {
   getSettings(guildId) {
     const defaults = this.Config.defaultSettings || {};
     const guildData = this.settings.get(guildId) || {};
-    let settings = {};
+    const settings = {};
 
     Object.keys(defaults).forEach((key) => {
       settings[key] = guildData[key] ? guildData[key] : defaults[key];
@@ -104,10 +105,10 @@ class LocusBot extends Client {
 
   /* Override or add configuration items to specific guilds */
   updateSettings(guildId, newSettings) {
-    const defaults = this.settings.get("default");
+    const defaults = this.settings.get('default');
     let settings = this.settings.get(guildId);
 
-    if (typeof settings != 'object') settings = {};
+    if (typeof settings !== 'object') settings = {};
 
     Object.keys(newSettings).forEach((key) => {
       if (defaults[key] !== newSettings[key]) {

@@ -6,12 +6,22 @@ class Command {
     usage = 'No usage examples available',
     enabled = true,
     guildOnly = true,
-    aliases = new Array(),
-    permLevel = 'Member'
+    aliases = [],
+    permLevel = 'Member',
   }) {
     this.client = client;
-    this.help = { name, description, category, usage }
-    this.conf = { enabled, guildOnly, aliases, permLevel }
+    this.help = {
+      name,
+      description,
+      category,
+      usage,
+    };
+    this.conf = {
+      enabled,
+      guildOnly,
+      aliases,
+      permLevel,
+    };
   }
 }
 

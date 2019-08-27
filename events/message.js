@@ -1,4 +1,4 @@
-class message {
+class Message {
   constructor(client) {
     this.client = client;
   }
@@ -26,7 +26,7 @@ class message {
     if (message.content.indexOf(guildSettings.prefix) !== 0) return;
 
     // Begin command processing
-    //const messageArgs = message.content.slice(guildSettings.prefix.length).trim().split(/ +/g);
+    // const messageArgs = message.content.slice(guildSettings.prefix.length).trim().split(/ +/g);
     const messageArgs = message.content.substring(guildSettings.prefix.length).trim().split(' ');
     const commandText = messageArgs.shift().toLowerCase();
 
@@ -46,15 +46,14 @@ class message {
 
     if (lvl < this.client.levelCache[command.conf.permLevel]) {
       if (guildSettings.systemNotice) {
-        return message.channel.send(`:octagonal_sign: | You do not have enough permissions to use this command.`);
-      } else {
-        return;
+        return message.channel.send(':octagonal_sign: | You do not have enough permissions to use this command.');
       }
+      return;
     }
 
     message.author.permLevel = lvl;
     // message.flags = [];
-    
+
     // while(messageArgs[0] && messageArgs[0][0]) {
     //   message.flags.push(messageArgs.shift().slice(1));
     // }
@@ -65,4 +64,4 @@ class message {
   }
 }
 
-module.exports = message;
+module.exports = Message;

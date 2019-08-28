@@ -120,6 +120,28 @@ class LocusBot extends Client {
 
     this.settings.set(guildId, settings);
   }
+
+  /**
+   * Awaits a user's response
+   * @param {Object} userMessage message object from the user that activated the command
+   * @param {String|Object} botMessageContent content of the message to send
+   * @param {Number} timeLimit time limit (in milliseconds)
+   */
+  async awaitResponse (userMessage, botMessageContent, timeLimit = 60000) {
+    await userMessage.channel.send(botMessageContent);
+
+    try {
+      const newMessages = await userMessage.channel.awaitMessages(x => x.author.id === userMessage.author.id, {
+        max: 1,
+        time: timeLimit,
+        errors: ['time'],
+      });
+
+      return newMessages.first().content;
+    } catch (e) {
+      return '';
+    }
+  }
 }
 
 module.exports = LocusBot;

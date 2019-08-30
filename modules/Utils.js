@@ -6,12 +6,12 @@ class Utils {
    * @param {String} messageText text to display as an error message
    * @returns Pre-formatted RichEmbed object with the error message
    */
-  static createErrorMessage (messageText) {
+  static createErrorMessage(messageText) {
     const errorMessage = new RichEmbed()
       .setColor('#D0021B')
-      .setDescription(`:octagonal_sign: | ${ messageText }`)
+      .setDescription(`:octagonal_sign: | ${messageText}`)
       .setTimestamp();
-    
+
     return errorMessage;
   }
 
@@ -20,12 +20,12 @@ class Utils {
    * @param {String} messageText text to display as a success message
    * @returns Pre-formatted RichEmbed object with the success message
    */
-  static createSuccessMessage (messageText) {
+  static createSuccessMessage(messageText) {
     const successMessage = new RichEmbed()
       .setColor('#7ED321')
-      .setDescription(`:white_check_mark: | ${ messageText }`)
+      .setDescription(`:white_check_mark: | ${messageText}`)
       .setTimestamp();
-    
+
     return successMessage;
   }
 }

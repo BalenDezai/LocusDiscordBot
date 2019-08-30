@@ -57,7 +57,8 @@ init();
 client.on('disconnect', () => { client.logger.warn('Locus is shutting down...'); })
   .on('reconnecting', () => { client.logger.log('Locus is reconnecting...', 'log'); })
   .on('error', (error) => { client.logger.error(error); })
-  .on('warn', (warning) => { client.logger.warning(warning); });
+  .on('warn', (warning) => { client.logger.warning(warning); })
+  .on('guildCreate', guild => console.log(guild));
 
 process.on('uncaughtException', (error) => {
   console.error(`Uncaught exception: ${error.stack}`);

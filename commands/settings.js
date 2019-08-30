@@ -3,7 +3,7 @@ const Utils = require('../modules/Utils');
 const Command = require('../models/Command');
 
 class Settings extends Command {
-  constructor (client) {
+  constructor(client) {
     super(client, {
       name: 'settings',
       description: 'Update/change or check current server settings',
@@ -11,13 +11,12 @@ class Settings extends Command {
       usage: 'settings [get/set/reset] [key] [value]',
       guildOnly: true,
       aliases: ['set', 'settings'],
-      permLevel: 'Administrator'
+      permLevel: 'Administrator',
     });
   }
 
-  async run (message, [action, key, ...value]) {
-    const settings = message.settings;
-    const defaultSettings = this.client.settings.get('default');
+  async run(message, [action, key, ...value]) {
+    const { settings } = message;
 
     // Check if the current guild is in the settings
     // If not, create an entry in the Enmap
@@ -37,7 +36,7 @@ class Settings extends Command {
         }
 
         // Check whether the key name exists in the settings
-        if (!settings[key]) {
+        if (!(key in settings)) {
           return message.channel.send(Utils.createErrorMessage('The key you specified does not exist in the settings'));
         }
 
@@ -57,7 +56,7 @@ class Settings extends Command {
           }
 
           this.client.settings.set(message.guild.id, valueString, key);
-          message.channel.send(Utils.createSuccessMessage(`**${ key }** has been successfully set to **${ valueString }**`));
+          message.channel.send(Utils.createSuccessMessage(`**${key}** has been successfully set to **${valueString}**`));
           break;
         }
         break;
@@ -78,7 +77,7 @@ class Settings extends Command {
 
         // Check whether there's an override currently being used for the server
         if (!overriddenSettings[key]) {
-          return message.channel.send(Utils.createErrorMessage(`The setting **${ key }** is already set to default`));
+          return message.channel.send(Utils.createErrorMessage(`The setting **${key}** is already set to default`));
         }
 
         // Create a new message to send to the user to await their response
@@ -87,7 +86,7 @@ class Settings extends Command {
 
         const confirmationMessage = new RichEmbed()
           .setColor('#BC42F5')
-          .setDescription(`:question: | Are you **sure** you want to reset ${ key } to its default value?`)
+          .setDescription(`:question: | Are you **sure** you want to reset ${key} to its default value?`)
           .setFooter('Respond with "yes" or "no"')
           .setTimestamp();
 
@@ -95,12 +94,12 @@ class Settings extends Command {
 
         if (yesResponses.includes(response.toLowerCase())) {
           this.client.settings.delete(message.guild.id, key);
-          return message.channel.send(Utils.createSuccessMessage(`**${ key }** has been reset to the default value`));
-        } else if (noResponses.includes(response.toLowerCase())) {
-          return message.channel.send(Utils.createSuccessMessage(`The value for **${ key }** will remain as **${ settings[key] }**`));
-        } else {
-          return message.channel.send(Utils.createErrorMessage('The command has timed out or your response is not valid'));
+          return message.channel.send(Utils.createSuccessMessage(`**${key}** has been reset to the default value`));
         }
+        if (noResponses.includes(response.toLowerCase())) {
+          return message.channel.send(Utils.createSuccessMessage(`The value for **${key}** will remain as **${settings[key]}**`));
+        }
+        return message.channel.send(Utils.createErrorMessage('The command has timed out or your response is not valid'));
       }
 
       case 'get':
@@ -115,7 +114,7 @@ class Settings extends Command {
           return message.channel.send(Utils.createErrorMessage('The key you specified does not exist in the settings'));
         }
 
-        message.channel.send(Utils.createSuccessMessage(`**${ key }** is currently set to: **${ settings[key] }**`));
+        message.channel.send(Utils.createSuccessMessage(`**${key}** is currently set to: **${settings[key]}**`));
         break;
       }
 
@@ -125,19 +124,19 @@ class Settings extends Command {
         let values = '';
 
         // Iterate through the settings and format the strings properly to display
-        Object.entries(settings).forEach(([key, value]) => {
-          keys += (`${ key }\n`);
-          values += (`${ value }\n`);
+        Object.entries(settings).forEach(([skey, svalue]) => {
+          keys += (`${skey}\n`);
+          values += (`${svalue}\n`);
         });
 
         // Create a new rich embed object to format the message
         const allSettings = new RichEmbed()
           .setColor('#7ED321')
-          .setDescription(`Viewing all settings for **${ message.guild.name }**`)
+          .setDescription(`Viewing all settings for **${message.guild.name}**`)
           .addField('Setting', keys, true)
           .addField('Value', values, true)
           .setTimestamp();
-        
+
         message.channel.send(allSettings);
         break;
       }

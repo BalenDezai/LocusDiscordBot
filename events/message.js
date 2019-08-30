@@ -52,11 +52,6 @@ class Message {
     }
 
     message.author.permLevel = lvl;
-    // message.flags = [];
-
-    // while(messageArgs[0] && messageArgs[0][0]) {
-    //   message.flags.push(messageArgs.shift().slice(1));
-    // }
 
     // Finally we run the command
     this.client.logger.command(`${message.author.tag} (ID:${message.author.id}) is trying to run command ${command.help.name}`);

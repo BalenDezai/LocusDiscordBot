@@ -127,7 +127,7 @@ class LocusBot extends Client {
    * @param {String|Object} botMessageContent content of the message to send
    * @param {Number} timeLimit time limit (in milliseconds)
    */
-  async awaitResponse (userMessage, botMessageContent, timeLimit = 60000) {
+  static async awaitResponse(userMessage, botMessageContent, timeLimit = 60000) {
     await userMessage.channel.send(botMessageContent);
 
     try {

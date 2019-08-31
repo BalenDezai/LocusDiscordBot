@@ -1,3 +1,5 @@
+const Utils = require('../modules/Utils');
+
 class Message {
   constructor(client) {
     this.client = client;
@@ -33,28 +35,28 @@ class Message {
     if (message.guild && !message.member) await message.guild.fetchMember(message.author);
 
     // Get the member's permission level
-    const lvl = this.client.permLevel(message);
+    const lvlObject = this.client.permLevel(message);
 
     // Grab the command from the Collection we set earlier
     const command = this.client.commands.get(commandText) || this.client.commands.get(this.client.aliases.get(commandText));
     if (!command) return;
 
     if (!message.guild && command.conf.guildOnly) {
-      return message.channel.send('Sorry, this command is unavailable to use in DMs.');
+      return message.channel.send(Utils.createErrorMessage('Sorry, this command is unavailable to use in DMs.'));
     }
 
-    if (lvl < this.client.levelCache[command.conf.permLevel]) {
+    if (lvlObject.lvl < this.client.levelCache[command.conf.permLevel]) {
       if (guildSettings.systemNotice) {
-        return message.channel.send(':octagonal_sign: | You do not have enough permissions to use this command.');
+        return message.channel.send(Utils.createErrorMessage('You do not have enough permissions to use this command.'));
       }
       return;
     }
 
-    message.author.permLevel = lvl;
+    message.author.permLevel = lvlObject.lvl;
 
     // Finally we run the command
     this.client.logger.command(`${message.author.tag} (ID:${message.author.id}) is trying to run command ${command.help.name}`);
-    command.run(message, messageArgs, lvl);
+    command.run(message, messageArgs, lvlObject.lvl);
   }
 }
 

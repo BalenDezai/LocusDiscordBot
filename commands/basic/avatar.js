@@ -4,9 +4,9 @@ class Avatar extends Command {
   constructor(client) {
     super(client, {
       name: 'avatar',
-      description: 'displays mentioned users avatar',
+      description: 'displays self or mentioned users avatar',
       category: 'Basic',
-      usage: 'avatar',
+      usage: ['avatar', 'avatar [user mention]'],
       aliases: ['av'],
     });
     this.run = async (message, args) => {

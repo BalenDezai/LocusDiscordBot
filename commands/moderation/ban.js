@@ -14,12 +14,17 @@ class Ban extends Command {
   }
 
   async run(message, args) {
+    //  find the indexes for arguements
     const indexOfD = args.indexOf('-d');
     const indexOfR = args.indexOf('-r');
+    //  parse the day arguement
     const days = parseInt(args.slice(indexOfD + 1, indexOfR), 10);
+    //  seperate the reason into a whole string
     const reason = args.slice(indexOfR + 1).join(' ');
+
     const bannedUsersTags = [];
 
+    //  for each mentioned user, ban the user, inserting the days and reason
     if (message.mentions.users.size > 0) {
       message.mentions.users.forEach((user) => {
         const member = message.guild.member(user);

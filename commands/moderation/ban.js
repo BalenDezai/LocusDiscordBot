@@ -9,20 +9,11 @@ class Ban extends Command {
       category: 'Moderation',
       usage: ['ban [user mention/s]', ['ban [user mention/s] -d [days] -r [reason]']],
       guildOnly: true,
-      permLevel: ['Administrator', 'Moderator', 'Server Owner'],
+      permLevel: 'Moderator',
     });
   }
 
   async run(message, args) {
-    // if (!message.guild) {
-    //   return;
-    // }
-
-    // if (senderRole.lvl < 1 || senderRole.lvl > 3) {
-    //   message.channel.send(Utils.createErrorMessage('You do not have permission to ban'));
-    //   return;
-    // }
-
     const indexOfD = args.indexOf('-d');
     const indexOfR = args.indexOf('-r');
     const days = parseInt(args.slice(indexOfD + 1, indexOfR), 10);

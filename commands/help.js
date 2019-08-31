@@ -28,6 +28,7 @@ class Help extends Command {
         }
         return -1;
       });
+
       // Create a new rich embed object
       const helpMessage = new RichEmbed()
         .setColor('#7ED321')
@@ -72,13 +73,18 @@ class Help extends Command {
           return;
         }
 
+        // Create a rich embed for the command arguments
         const helpMessage = new RichEmbed()
           .setColor('#7ED321')
           .setTitle(`Command name: _${command.help.name}_`)
           .setDescription(command.help.description)
           .addField('Usage', command.help.usage)
-          .addField('Aliases', command.conf.aliases.join(', '))
           .setTimestamp();
+
+        // Prevent empty values from reaching the rich embed object, whoops
+        if (command.conf.aliases.length > 0) {
+          helpMessage.addField('Aliases', command.conf.aliases.join(', '));
+        }
 
         message.channel.send(helpMessage);
       } else {

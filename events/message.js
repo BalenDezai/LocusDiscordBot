@@ -26,7 +26,6 @@ class Message {
     if (message.content.indexOf(guildSettings.prefix) !== 0) return;
 
     // Begin command processing
-    // const messageArgs = message.content.slice(guildSettings.prefix.length).trim().split(/ +/g);
     const messageArgs = message.content.substring(guildSettings.prefix.length).trim().split(' ');
     const commandText = messageArgs.shift().toLowerCase();
 

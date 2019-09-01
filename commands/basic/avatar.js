@@ -1,4 +1,5 @@
 const Command = require('../../models/Command');
+const { createErrorMessage } = require('../../modules/Utils');
 
 class Avatar extends Command {
   constructor(client) {
@@ -9,13 +10,19 @@ class Avatar extends Command {
       usage: ['avatar', 'avatar [user mention]'],
       aliases: ['av'],
     });
-    this.run = async (message, args) => {
-      if (args.length === 0) {
+    this.run = async (message) => {
+      if (message.mentions.users.size === 0) {
         message.channel.send(message.author.avatarURL);
         return;
       }
-      const memberId = args[0].substring(2, args[0].length - 1);
-      const foundMember = message.guild.members.find(member => member.id === memberId);
+
+      if (message.mentions.users.size > 1) {
+        message.channel.send(createErrorMessage('Can only grab one persons icon'));
+        return;
+      }
+      console.log(message.mentions.users);
+      const mentionedUser = message.mentions.users.first();
+      const foundMember = message.guild.member(mentionedUser);
       message.channel.send(foundMember.user.avatarURL);
     };
   }

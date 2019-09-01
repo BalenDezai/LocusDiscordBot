@@ -48,7 +48,7 @@ class Message {
     const lvlObject = this.client.permLevel(message);
 
     // First we check to see if the level set in the command actually exists
-    if (!this.client.levelCache[command.conf.permLevel]) {
+    if (typeof (this.client.levelCache[command.conf.permLevel]) !== 'number') {
       return message.channel.send(Utils.createErrorMessage('The command you\'re trying to run is improperly configured.'));
     }
 

@@ -11,6 +11,9 @@ const config = {
     welcomeEnabled: false,
     welcomeChannel: 'general',
     welcomeMessage: 'Welcome {{user}}!',
+    byeEnabled: false,
+    byeChannel: 'general',
+    byeMessage: 'Bye {{user}}',
   },
 
   permLevels: [

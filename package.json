@@ -19,7 +19,6 @@
     "nodemon": "^1.18.9"
   },
   "dependencies": {
-    "axios": "^0.19.0",
     "better-sqlite3": "^5.4.2",
     "chalk": "^2.4.2",
     "discord.js": "^11.4.2",

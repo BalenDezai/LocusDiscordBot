@@ -20,8 +20,17 @@ class Message {
 
     // Check if the bot was mentioned
     const mentionMatch = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
+
+    // If so, inform the user about the current prefix
     if (message.content.match(mentionMatch)) {
-      return message.reply(`Current prefix for this guild is: **${guildSettings.prefix}**`);
+      return message.channel.send(Utils.createInfoMessage(`Current prefix for this guild is: **${guildSettings.prefix}**`))
+      .then((botMessage) => {
+        // Delete the message sent by the bot after 10000ms (10 seconds)
+        botMessage.delete(10000);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
 
     // Ignore messages that don't start with the set prefix

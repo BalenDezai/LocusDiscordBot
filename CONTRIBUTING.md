@@ -7,7 +7,7 @@ When contributing to this repository, please first discuss the change you wish t
 When adding a new command to the bot, make sure to create the command file in "commands" folder.
 
 ### Adding an event
-When adding a new command to the bot, make sure to create the event file in "events" folder.
+When adding a new event to the bot, make sure to create the event file in "events" folder.
 
 ### Coding structure to follow
 Make sure to check out how the other commands are written and follow the same.

@@ -1,7 +1,6 @@
 const { RichEmbed } = require('discord.js');
-const axios = require('axios');
 const Command = require('../../models/Command');
-const  { VerificationLevelString } = require('../../modules/Utils');
+const { VerificationLevelString } = require('../../modules/Utils');
 
 
 class Server extends Command {
@@ -14,7 +13,7 @@ class Server extends Command {
       guildOnly: true,
       permLevel: 'Member',
     });
-    this.run = async (message) => {
+    this.run = (message) => {
       const { guild } = message;
       const author = guild.member(message.author);
       const txtChSize = guild.channels.filter(ch => ch.type === 'text').size;
@@ -29,14 +28,15 @@ class Server extends Command {
         .addField('Server creation Date:', guild.createdAt.toUTCString())
         .addField('You joined at:', author.joinedAt.toUTCString());
 
-
       if (guild.iconURL) {
         const serverIconUrl = guild.iconURL.slice(0, -4);
-        const res = await axios.head(serverIconUrl);
-        const type = res.headers['content-type'];
-        const serverIconType = type.slice(type.indexOf('/') + 1);
-        ServerInfo.setAuthor(`${guild.name} (${guild.nameAcronym})`, `${serverIconUrl}.${serverIconType}`);
-        ServerInfo.setThumbnail(`${serverIconUrl}.${serverIconType}`);
+        if (guild.features.includes('ANIMATED_ICON')) {
+          ServerInfo.setAuthor(`${guild.name} (${guild.nameAcronym})`, `${serverIconUrl}.gif`);
+          ServerInfo.setThumbnail(`${serverIconUrl}.gif`);
+        } else {
+          ServerInfo.setAuthor(`${guild.name} (${guild.nameAcronym})`, `${guild.iconURL}}`);
+          ServerInfo.setThumbnail(guild.iconURL);
+        }
       }
       message.channel.send(ServerInfo);
     };

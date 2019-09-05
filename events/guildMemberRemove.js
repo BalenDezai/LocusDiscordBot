@@ -8,7 +8,7 @@ class GuildMemberRemove {
     console.log(settings);
     if (settings.byeEnabled === 'true') {
       const channelToMessage = guildMember.guild.channels.find(channel => channel.name === settings.byeChannel);
-      const mentioned = settings.byeMessage.indexOf('{user}');
+      const mentioned = settings.byeMessage.indexOf('{{user}}');
       let msg;
 
       if (mentioned > -1) {

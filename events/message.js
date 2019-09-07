@@ -24,13 +24,13 @@ class Message {
     // If so, inform the user about the current prefix
     if (message.content.match(mentionMatch)) {
       return message.channel.send(Utils.createInfoMessage(`Current prefix for this guild is: **${guildSettings.prefix}**`))
-      .then((botMessage) => {
+        .then((botMessage) => {
         // Delete the message sent by the bot after 10000ms (10 seconds)
-        botMessage.delete(10000);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+          botMessage.delete(10000);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
 
     // Ignore messages that don't start with the set prefix
@@ -61,14 +61,20 @@ class Message {
       return message.channel.send(Utils.createErrorMessage('The command you\'re trying to run is improperly configured.'));
     }
 
+    // Retrieve role specific user perms
+    const userPerms = message.member.permissions.toArray();
+
     // Then we check that the user's own permission level is higher than the MINIMUM required by
     // the command
     if (lvlObject.lvl < this.client.levelCache[command.conf.permLevel]) {
-      console.log(`PERM LEVEL: ${this.client.levelCache[command.conf.permLevel]}`);
-      if (guildSettings.systemNotice) {
-        return message.channel.send(Utils.createErrorMessage('You do not have enough permissions to use this command.'));
+      // check if the user has specific role permissions
+      if (!Utils.hasPerms(userPerms, command.conf.perms)) {
+        console.log(`PERM LEVEL: ${this.client.levelCache[command.conf.permLevel]}`);
+        if (guildSettings.systemNotice) {
+          return message.channel.send(Utils.createErrorMessage('You do not have enough permissions to use this command.'));
+        }
+        return;
       }
-      return;
     }
 
     // Save the current user's permission level in the message.author object

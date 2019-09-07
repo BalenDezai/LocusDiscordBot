@@ -10,6 +10,7 @@ class Emote extends Command {
       usage: 'Emote [add/remove] [name if add] [emote or emote url]',
       guildOnly: true,
       permLevel: 'Moderator',
+      perms: ['MANAGE_EMOJIS'],
     });
     this.createUrl = (emoteHash) => {
       const discordUrl = 'https://cdn.discordapp.com/emojis/';

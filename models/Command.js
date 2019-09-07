@@ -8,6 +8,7 @@ class Command {
     guildOnly = true,
     aliases = [],
     permLevel = 'Member',
+    perms = [],
   }) {
     this.client = client;
     this.help = {
@@ -21,6 +22,7 @@ class Command {
       guildOnly,
       aliases,
       permLevel,
+      perms,
     };
   }
 }

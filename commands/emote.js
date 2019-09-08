@@ -16,27 +16,21 @@ class Emote extends Command {
       const discordUrl = 'https://cdn.discordapp.com/emojis/';
       const ext = '.png';
       return `${discordUrl}${emoteHash}${ext}`;
-    }
+    };
     this.getEmoteHash = (emote) => {
       const indexOfColon = emote.lastIndexOf(':');
       const indexOfEnd = emote.indexOf('>');
       return emote.slice(indexOfColon + 1, indexOfEnd);
     };
     this.getName = (emote) => {
+      if (emote.indexOf('http') > -1) {
+        const indexOfslash = emote.lastIndexOf('/');
+        const indexofext = emote.lastIndexOf('.');
+        return emote.slice(indexOfslash + 1, indexofext);
+      }
       const IndexOfFirstColon = emote.indexOf(':');
       const indexOfLastColon = emote.lastIndexOf(':');
       return emote.slice(IndexOfFirstColon + 1, indexOfLastColon);
-    }
-    this.createNameFromUrl = (url) => {
-      const indexOfslash = url.lastIndexOf('/');
-      const indexofext = url.lastIndexOf('.');
-      url.slice(indexOfslash + 1, indexofext);
-    }
-    this.isLink = (nameOrUl) => {
-      if (nameOrUl.indexOf('http') === -1) {
-        return false;
-      }
-      return true;
     };
   }
 
@@ -44,29 +38,40 @@ class Emote extends Command {
   async run(message, [action, name, emote]) {
     switch (action.toLowerCase()) {
       case 'add': {
-        let emoteName;
         if (!emote) {
-          const isLink = this.isLink(name);
-          if (isLink) {
-            emoteName = this.createNameFromUrl(name);
-            message.guild.createEmoji(name, emoteName);
-          } else {
-            const emoteHash = this.getEmoteHash(name);
-            const emoteUrl = this.createUrl(emoteHash);
-            emoteName = this.getName(name);
-            message.guild.createEmoji(emoteUrl, emoteName);
-          }
-          message.channel.send(Utils.createSuccessMessage(`emote ${emoteName} added`));
-        } else {
-          console.log(this.getEmoteHash(emote));
+          emote = name;
+          name = this.getName(emote);
         }
+        if (emote.indexOf('http') === -1) {
+          console.log('here');
+          const emoteHash = this.getEmoteHash(emote);
+          emote = this.createUrl(emoteHash);
+          console.log(emote);
+        }
+        message.guild.createEmoji(emote, name)
+          .then(createdEmoji => message.channel.send(Utils.createSuccessMessage(`emote ${createdEmoji.name} added`)))
+          .catch((err) => {
+            this.client.logger.error(err);
+            message.channel.send(Utils.createErrorMessage('Error adding the emote'));
+          });
         break;
       }
       case 'remove': {
+        const emoteToDelete = message.guild.emojis.find(emoji => emoji.id === this.getEmoteHash(name));
+        if (!emoteToDelete) {
+          message.channel.send(Utils.createErrorMessage('Emote does not exist in this guild'));
+          return;
+        }
+        message.guild.deleteEmoji(emoteToDelete, emote)
+          .then(() => message.channel.send(Utils.createSuccessMessage(`emote ${emoteToDelete.name} removed`)))
+          .catch((err) => {
+            this.client.logger.error(err);
+            message.channel.send(Utils.createErrorMessage('Error removing the emote'));
+          });
         break;
       }
       default: {
-        message.channel.send(Utils.createErrorMessage(`${action} is not a valid action`))
+        message.channel.send(Utils.createErrorMessage(`${action} is not a valid action`));
       }
     }
   }

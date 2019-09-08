@@ -37,7 +37,7 @@ If you do come across such errors, make sure to try out these steps:
 
 ```powershell
 # install the node.js windows toolset (make sure CMD or powershell is open as administrator)
-$ npm install --global windows-build-tools
+$ npm i --global windows-build-tools
 ```
 If it still does not work,
 
@@ -63,7 +63,7 @@ $ npm config set msvs_version 2017
 ```js
 const config = {
   botAdmins: [''],
-  token: 'token here',
+  token: '{token area}',
 }
 ```
 

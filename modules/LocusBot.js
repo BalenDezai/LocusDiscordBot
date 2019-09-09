@@ -2,6 +2,7 @@ const { Client, Collection } = require('discord.js');
 const { promisify } = require('util');
 const path = require('path');
 const Enmap = require('enmap');
+const SQLite = require('better-sqlite3');
 
 class LocusBot extends Client {
   constructor(options) {
@@ -20,6 +21,14 @@ class LocusBot extends Client {
       fetchAll: false,
       autoFetch: true,
     });
+
+    // create sqlite file to use
+    this.sql = new SQLite('../points.sqlite');
+    // sql query to get the point score
+    this.getPointScore = {};
+    // sql query to set point score
+
+    this.setPointScore = {};
 
     /* Easier console logging */
     this.logger = require('./Logger');

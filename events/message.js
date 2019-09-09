@@ -9,6 +9,36 @@ class Message {
     // Ignore messages from other bots
     if (message.author.bot) return;
 
+
+    // TODO: perhaps refactor?
+    // point scoring logic
+    let score;
+    if (message.guild) {
+      //  get current user score if the message is in a guild
+      score = this.client.getPointScore.get(message.author.id, message.guild.id);
+      if (!score) {
+        //  if user is new (not tracked by bot), create new scorekeeping
+        score = {
+          id: `${message.guild.id}-${message.author.id}`,
+          user: message.author.id,
+          guild: message.guild.id,
+          points: 0,
+          level: 0,
+        };
+      }
+      score.points += 1;
+      // TODO: perhaps change? if neccesary
+      // logic to calculate the point
+      const currentLevel = Math.floor(0.1 + Math.sqrt(score.points));
+      if (score.level < currentLevel) {
+        score.level += 1;
+        message.reply(`Congratulations ${message.author.name}, you leveled up to level: ${currentLevel}`);
+      }
+      // save new point score
+      this.client.setPointScore.run(score);
+    }
+
+
     // If the bot has no permission to send messages, ignore the processing
     if (message.guild && !message.channel.permissionsFor(message.guild.me).missing('SEND_MESSAGES')) {
       return;

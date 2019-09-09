@@ -7,7 +7,7 @@ class Emote extends Command {
       name: 'emote',
       description: 'Add or Remove emotes on the server',
       category: 'Server',
-      usage: 'Emote [add/remove] [name if add] [emote or emote url]',
+      usage: 'emote [add/remove] [name if add] [emote or emote url]',
       guildOnly: true,
       permLevel: 'Moderator',
       perms: ['MANAGE_EMOJIS'],

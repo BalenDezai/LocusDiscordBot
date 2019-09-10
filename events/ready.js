@@ -28,7 +28,7 @@ class ready {
 
     if (!table['count(*)']) {
       // if the table isnt in the db file, create it
-      this.client.sql.prepare('CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);').run();
+      this.client.sql.prepare('CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER,  lastXp TEXT);').run();
       // make ID row unique and index it
       this.client.sql.prepare('CREATE UNIQUE INDEX idx_scores_id ON scores (id);').run();
       this.client.sql.pragma('synchronous = 1');
@@ -36,7 +36,7 @@ class ready {
     }
 
     this.client.getPointScore = this.client.sql.prepare('SELECT * FROM scores WHERE user = ? AND guild = ?');
-    this.client.setPointScore = this.client.sql.prepare('INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUEs (@id, @user, @guild, @points, @level);');
+    this.client.setPointScore = this.client.sql.prepare('INSERT OR REPLACE INTO scores (id, user, guild, points, level, lastxp) VALUEs (@id, @user, @guild, @points, @level, @lastXp);');
     // Set activity message
     this.client.user.setActivity('woah', { type: 'LISTENING' });
 

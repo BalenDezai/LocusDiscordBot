@@ -12,6 +12,7 @@ class Message {
 
     // TODO: perhaps refactor?
     // point scoring logic
+    const twoMinutes = 1000 * 60 * 2;
     let score;
     if (message.guild) {
       //  get current user score if the message is in a guild
@@ -24,13 +25,19 @@ class Message {
           guild: message.guild.id,
           points: 0,
           level: 0,
+          time: new Date().getTime() - twoMinutes,
         };
       }
-      score.points += 1;
-      // TODO: perhaps change? if neccesary
+
+
       // logic to calculate the point
+      const min = 0;
+      const max = 5;
+      score.points += Math.floor((Math.random * max) + min);
+
       const currentLevel = Math.floor(0.1 + Math.sqrt(score.points));
       if (score.level < currentLevel) {
+        //  TODO: needs to be changed
         score.level += 1;
         message.reply(`Congratulations ${message.author.name}, you leveled up to level: ${currentLevel}`);
       }

@@ -23,6 +23,7 @@ class ready {
       this.client.settings.set('default', this.client.Config.defaultSettings);
     }
 
+    // this.client.sql.prepare('DROP TABLE scores;').run();
     // retrieve the table to check if it exists
     const table = this.client.sql.prepare('SELECT count(*) FROM sqlite_master WHERE type=\'table\' and name=\'scores\';').get();
 

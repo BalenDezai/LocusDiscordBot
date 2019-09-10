@@ -11,8 +11,8 @@ class Message {
 
 
     // TODO: perhaps refactor?
-    // point scoring logic
     const twoMinutes = 1000 * 60 * 2;
+    // point scoring logic
     let score;
     if (message.guild) {
       //  get current user score if the message is in a guild
@@ -25,24 +25,30 @@ class Message {
           guild: message.guild.id,
           points: 0,
           level: 0,
-          time: new Date().getTime() - twoMinutes,
+          lastXp: new Date().getTime() - twoMinutes,
         };
       }
 
 
-      // logic to calculate the point
-      const min = 0;
-      const max = 5;
-      score.points += Math.floor((Math.random * max) + min);
+      //  if 2 minutes has elapsed
+      if (new Date().getTime() - score.lastXp > twoMinutes) {
+ 
+        // give a random xp between 0 and 5
+        const min = 0;
+        const max = 5;
+        score.points += Math.floor((Math.random * max) + min);
 
-      const currentLevel = Math.floor(0.1 + Math.sqrt(score.points));
-      if (score.level < currentLevel) {
+        const currentLevel = Math.floor(0.1 + Math.sqrt(score.points));
+        if (score.level < currentLevel) {
         //  TODO: needs to be changed
-        score.level += 1;
-        message.reply(`Congratulations ${message.author.name}, you leveled up to level: ${currentLevel}`);
+          score.level += 1;
+          message.reply(`Congratulations you leveled up to level: ${currentLevel}`);
+        }
+        this.client.logger.log('point given');
+        // save new point score
+        score.lastXp = new Date().getTime();
+        this.client.setPointScore.run(score);
       }
-      // save new point score
-      this.client.setPointScore.run(score);
     }
 
 

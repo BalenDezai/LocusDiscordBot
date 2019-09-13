@@ -59,6 +59,10 @@ class Utils {
     return verificationLevel[verificationLevelNumber];
   }
 
+  static randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
   /**
    * checks if the member has the specific neccesary command perms
    * @param {*} memberPermissions the member permissions

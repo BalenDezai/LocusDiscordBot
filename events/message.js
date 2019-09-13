@@ -9,7 +9,6 @@ class Message {
     // Ignore messages from other bots
     if (message.author.bot) return;
 
-
     // TODO: perhaps refactor?
     const twoMinutes = 1000 * 60 * 2;
     // point scoring logic
@@ -17,6 +16,7 @@ class Message {
     if (message.guild) {
       //  get current user score if the message is in a guild
       score = this.client.getPointScore.get(message.author.id, message.guild.id);
+      
       if (!score) {
         //  if user is new (not tracked by bot), create new scorekeeping
         score = {
@@ -28,15 +28,10 @@ class Message {
           lastXp: new Date().getTime() - twoMinutes,
         };
       }
-
-
       //  if 2 minutes has elapsed
       if (new Date().getTime() - score.lastXp > twoMinutes) {
- 
         // give a random xp between 0 and 5
-        const min = 0;
-        const max = 5;
-        score.points += Math.floor((Math.random * max) + min);
+        score.points += Utils.randomNumber(1, 5);
 
         const currentLevel = Math.floor(0.1 + Math.sqrt(score.points));
         if (score.level < currentLevel) {

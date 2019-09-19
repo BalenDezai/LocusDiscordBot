@@ -4,7 +4,7 @@ class Guildcreate {
   }
 
   async run(guild) {
-    //  TODO: add a welcome message
+    //  TODO: perhaps use this
   }
 }
 

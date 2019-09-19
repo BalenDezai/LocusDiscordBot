@@ -4,7 +4,7 @@ class GuildMemberAdd {
   }
 
   async run(guildMember) {
-    const settings = JSON.parse(this.client.getSettings(guildMember.guild.id));
+    const settings = this.client.getSettings(guildMember.guild.id);
     const channelToMessage = guildMember.guild.channels.find(channel => channel.name === settings.welcomeChannel);
     console.log(settings);
     if (settings.welcomeEnabled === true) {

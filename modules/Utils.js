@@ -59,6 +59,11 @@ class Utils {
     return verificationLevel[verificationLevelNumber];
   }
 
+  /**
+   * creates a random number between a minimum and a maximum
+   * @param {*} min the mminimum number it can get
+   * @param {*} max  the maximum number it can get
+   */
   static randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
@@ -75,6 +80,30 @@ class Utils {
       }
     });
     return true;
+  }
+
+  static Auditable(client, guild, messageInfo, args) {
+    const settings = client.getSettings(guild.id);
+    if (settings.auditLogs === false) {
+      return;
+    }
+    const logs = guild.channels.find(ch => ch.name === settings.auditLogsChannel);
+    if (guild.me.hasPermission('MANAGE_CHANNELS') && !logs) {
+      guild.createChannel(settings.auditLogsChannel, 'text');
+    }
+    if (!guild.me.hasPermission('MANAGE_CHANNELS') && !logs) {
+      client.logger.log('guild logs channel does not exist and cant be created');
+    }
+    const msgToReturn = new RichEmbed()
+      .setColor(messageInfo.color)
+      .setDescription(messageInfo.description)
+      .setAuthor(`${messageInfo.authorName} ${messageInfo.authorIcon}`);
+
+    Object.entries(args).forEach(([key, value]) => {
+      msgToReturn.addField(key, value);
+    });
+    console.log(logs);
+    logs.send(msgToReturn);
   }
 }
 

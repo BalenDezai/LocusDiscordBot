@@ -16,7 +16,7 @@ class Message {
     if (message.guild) {
       //  get current user score if the message is in a guild
       score = this.client.getPointScore.get(message.author.id, message.guild.id);
-      
+
       if (!score) {
         //  if user is new (not tracked by bot), create new scorekeeping
         score = {
@@ -37,7 +37,8 @@ class Message {
         if (score.level < currentLevel) {
         //  TODO: needs to be changed
           score.level += 1;
-          message.reply(`Congratulations you leveled up to level: ${currentLevel}`);
+          message.reply(`Congratulations you leveled up to level: ${currentLevel}`)
+            .catch(err => this.client.logger.error(err.message));
         }
         this.client.logger.log('point given');
         // save new point score
